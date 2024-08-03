@@ -5,7 +5,7 @@ import com.example.productservice.models.Product;
 import java.util.List;
 
 public interface ProductService {
-    Product createProduct(Product product);
+    Product createProduct(String title, Double price,String description,String image,String category);
     List<Product> getAllProducts();
     Product getProductById(Long id);
 }
