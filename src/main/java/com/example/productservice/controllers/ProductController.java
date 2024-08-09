@@ -7,6 +7,9 @@ import com.example.productservice.services.ProductService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 public class ProductController {
 
@@ -19,9 +22,20 @@ public class ProductController {
 
 
     @GetMapping("/products")
-   public void getAllProducts(){
-
-
+   public List<ProductResponseDto> getAllProducts(){
+        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
+        List<Product> products=productService.getAllProducts();
+        for(Product product:products){
+            ProductResponseDto productResponseDto = new ProductResponseDto();
+            productResponseDto.setId(product.getId());
+            productResponseDto.setName(product.getName());
+            productResponseDto.setPrice(product.getPrice());
+            productResponseDto.setImageUrl(product.getImageUrl());
+            productResponseDto.setDescription(product.getDescription());
+            productResponseDto.setCategory(product.getCategory());
+            productResponseDtoList.add(productResponseDto);
+        }
+        return productResponseDtoList;
    }
 
    @PostMapping("/products")
