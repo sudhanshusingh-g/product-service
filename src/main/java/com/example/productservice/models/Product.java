@@ -1,19 +1,14 @@
 package com.example.productservice.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 public class Product {
-    private Long id;
+    private long id;
     private String name;
     private String description;
     private double price;
     private String imageUrl;
     private Category category;
+    private double rating;
 }

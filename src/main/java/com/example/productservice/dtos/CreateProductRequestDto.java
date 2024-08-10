@@ -1,15 +1,22 @@
 package com.example.productservice.dtos;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class CreateProductRequestDto {
-    private Long id;
+    /*
+
+    title: 'test product',
+    price: 13.5,
+    description: 'lorem ipsum set',
+    image: 'https://i.pravatar.cc',
+    category: 'electronic'
+
+    */
+    private int productId;
     private String title;
-    private Double price;
     private String description;
+    private double price;
     private String image;
     private String category;
 }

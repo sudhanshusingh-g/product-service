@@ -1,68 +1,66 @@
 package com.example.productservice.controllers;
 
 import com.example.productservice.dtos.CreateProductRequestDto;
-import com.example.productservice.dtos.ProductResponseDto;
+import com.example.productservice.dtos.FakeStoreProductResponseDto;
 import com.example.productservice.models.Product;
 import com.example.productservice.services.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/products")
 public class ProductController {
 
-    private ProductService productService;
+   private final ProductService productService;
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
-
-
-
-    @GetMapping("/products")
-   public List<ProductResponseDto> getAllProducts(){
-        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
-        List<Product> products=productService.getAllProducts();
-        for(Product product:products){
-            ProductResponseDto productResponseDto = new ProductResponseDto();
-            productResponseDto.setId(product.getId());
-            productResponseDto.setName(product.getName());
-            productResponseDto.setPrice(product.getPrice());
-            productResponseDto.setImageUrl(product.getImageUrl());
-            productResponseDto.setDescription(product.getDescription());
-            productResponseDto.setCategory(product.getCategory());
-            productResponseDtoList.add(productResponseDto);
-        }
-        return productResponseDtoList;
+   public ProductController(ProductService productService) {
+       this.productService = productService;
    }
 
-   @PostMapping("/products")
-   public Product createProduct(@RequestBody CreateProductRequestDto productRequestDto){
-     Product product=productService.createProduct(
-             productRequestDto.getTitle(),
-             productRequestDto.getPrice(),
-             productRequestDto.getDescription(),
-             productRequestDto.getImage(),
-             productRequestDto.getCategory()
-     );
-     return product;
+   @GetMapping
+   public List<Product> getAllProducts() {
+        return productService.getAllProducts();
 
    }
 
-   @GetMapping(value = "/products/{id}")
-   public ProductResponseDto getProductById(@PathVariable("id") Long id){
-        ProductResponseDto productResponseDto = new ProductResponseDto();
-       Product product =productService.getProductById(id);
-//       Conversion from product to dto
-       productResponseDto.setId(product.getId());
-       productResponseDto.setName(product.getName());
-       productResponseDto.setPrice(product.getPrice());
-       productResponseDto.setDescription(product.getDescription());
-       productResponseDto.setImageUrl(product.getImageUrl());
-       productResponseDto.setCategory(product.getCategory());
-
-       return productResponseDto;
+   @PostMapping
+    public Product addProduct(@RequestBody CreateProductRequestDto createProductRequestDto) {
+       return productService.createProduct(
+               createProductRequestDto.getTitle(),
+               createProductRequestDto.getPrice(),
+               createProductRequestDto.getDescription(),
+               createProductRequestDto.getImage(),
+               createProductRequestDto.getCategory()
+       );
    }
+
+   @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
+        productService.deleteProductById(id);
+       return ResponseEntity.ok("Deleted product with id " + id);
+   }
+
+   @PatchMapping("/{id}")
+    public ResponseEntity<String> updateProduct(@PathVariable("id") Long id ,@RequestBody FakeStoreProductResponseDto dto){
+       productService.updateProduct(
+               id,
+               dto.getTitle(),
+               dto.getPrice(),
+               dto.getDescription(),
+               dto.getImage(),
+               dto.getCategory(),
+               dto.getRating()
+       );
+       return ResponseEntity.ok("Updated product with id " + id);
+   }
+
+   @GetMapping("/{id}")
+    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
+       productService.getProductById(id);
+       return ResponseEntity.ok(productService.getProductById(id));
+   }
+
 }
