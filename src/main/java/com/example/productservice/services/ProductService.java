@@ -1,5 +1,6 @@
 package com.example.productservice.services;
 
+import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
 import com.example.productservice.models.Rating;
 
@@ -10,5 +11,7 @@ public interface ProductService {
     List<Product> getAllProducts();
     Product getProductById(Long id);
     void deleteProductById(Long id);
-    Product updateProduct(Long id, String title, Double price, String description, String image, String category, Rating rating);
+    void updateProduct(Long id, String title, Double price, String description, String image, String category, Rating rating);
+    List<Category> getAllCategories();
+    List<Product> getAllProductsByCategory(String category);
 }

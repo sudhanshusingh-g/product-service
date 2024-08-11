@@ -2,6 +2,7 @@ package com.example.productservice.controllers;
 
 import com.example.productservice.dtos.CreateProductRequestDto;
 import com.example.productservice.dtos.FakeStoreProductResponseDto;
+import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
 import com.example.productservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,19 @@ public class ProductController {
        productService.getProductById(id);
        return ResponseEntity.ok(productService.getProductById(id));
    }
+
+
+   //   GET all categories
+    @GetMapping("/categories")
+    public List<Category> getCategories() {
+        return productService.getAllCategories();
+    }
+
+
+    // GET all products by categories
+    @GetMapping("/category/{category}")
+    public List<Product> getCategoriesByCategory(@PathVariable String category) {
+       return productService.getAllProductsByCategory(category);
+    }
 
 }

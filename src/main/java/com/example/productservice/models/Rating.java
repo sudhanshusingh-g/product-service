@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class Rating {
-    private double rating;
+    private double rate;
     private long count;
 }

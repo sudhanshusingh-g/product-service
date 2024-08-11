@@ -5,13 +5,11 @@ import com.example.productservice.dtos.FakeStoreProductResponseDto;
 import com.example.productservice.models.Category;
 import com.example.productservice.models.Product;
 import com.example.productservice.models.Rating;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,15 +38,19 @@ public class FakeStoreProductService implements ProductService {
         Category category=new Category();
         category.setName(dto.getCategory());
         product.setCategory(category);
+
         Rating rating=new Rating();
-        rating.setRating(rating.getRating());
-        product.setRating(rating.getRating());
+        rating.setRate(dto.getRating().getRate());
+        rating.setCount(dto.getRating().getCount());
+        product.setRating(rating.getRate());
+
         return product;
 
 
     }
 
-//    GET all products from Fake store API
+
+    // GET all products from Fake store API
     @Override
     public List<Product> getAllProducts() {
         return webClient.get()
@@ -60,8 +62,8 @@ public class FakeStoreProductService implements ProductService {
                 .collect(Collectors.toList());
     }
 
-// POST product on Fake store
 
+    // POST product on Fake store
     @Override
     public Product createProduct(String title, Double price, String description, String image, String category) {
         CreateProductRequestDto requestDto=new CreateProductRequestDto();
@@ -87,16 +89,18 @@ public class FakeStoreProductService implements ProductService {
         }
         return null;
     }
-// DELETE product on Fake store
+
+
+    // DELETE product on Fake store
     @Override
     public void deleteProductById(Long id) {
             restTemplate.delete(baseUrl+"/"+id);
     }
 
-//    PATCH product of Fake Store
 
+    //    PATCH product of Fake Store
     @Override
-    public Product updateProduct(Long id,
+    public void updateProduct(Long id,
                                  String title,
                                  Double price,
                                  String description,
@@ -111,10 +115,12 @@ public class FakeStoreProductService implements ProductService {
         dto.setImage(image);
         dto.setCategory(category);
         dto.setRating(rating);
-        return convertToProduct(dto);
+        convertToProduct(dto);
+        restTemplate.patchForObject(baseUrl+"/"+id,dto,Void.class);
     }
 
-//    GET product by id
+
+    // GET product by id
     @Override
     public Product getProductById(Long id) {
        FakeStoreProductResponseDto responseDto=webClient.get()
@@ -126,5 +132,35 @@ public class FakeStoreProductService implements ProductService {
            return convertToProduct(responseDto);
        }
         return null;
+    }
+
+
+    //    GET all categories
+
+    @Override
+    public List<Category> getAllCategories() {
+        String[] responseDto=restTemplate.getForObject(baseUrl+"/categories", String[].class);
+        assert responseDto != null;
+        List<Category> categories= Arrays.stream(responseDto)
+                .map(name->{
+                    Category category=new Category();
+                    category.setName(name);
+                    return category;
+                })
+                .toList();
+        return categories;
+
+    }
+
+    @Override
+    public List<Product> getAllProductsByCategory(String category) {
+
+        FakeStoreProductResponseDto[] responseDto=restTemplate.getForObject(
+                baseUrl+"/category/"+category,
+                FakeStoreProductResponseDto[].class
+        );
+        return Arrays.stream(responseDto)
+                .map(this::convertToProduct)
+                .toList();
     }
 }
