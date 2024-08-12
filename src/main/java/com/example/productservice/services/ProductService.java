@@ -7,11 +7,13 @@ import com.example.productservice.models.Rating;
 import java.util.List;
 
 public interface ProductService {
-    Product createProduct(String title, Double price,String description,String image,String category);
+    Product createProduct(String title, double price,String description,String image,String category);
+
     List<Product> getAllProducts();
     Product getProductById(Long id);
     void deleteProductById(Long id);
-    void updateProduct(Long id, String title, Double price, String description, String image, String category, Rating rating);
-    List<Category> getAllCategories();
-    List<Product> getAllProductsByCategory(String category);
+    void updateProductPrice(Long id, Double price);
+    void updateProductDescription(Long id, String description);
+    void updateProductImage(Long id, String image);
+    List<Product> getAllProductsByCategory(Long categoryId);
 }

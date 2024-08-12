@@ -3,7 +3,7 @@ package com.example.productservice.dtos;
 import lombok.Data;
 
 @Data
-public class CreateProductRequestDto {
+public class CreateFakeStoreProductRequestDto {
     /*
 
     title: 'test product',
