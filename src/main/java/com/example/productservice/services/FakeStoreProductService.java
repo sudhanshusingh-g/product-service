@@ -49,7 +49,7 @@ public class FakeStoreProductService implements ProductService {
 
 
     @Override
-    public Product createProduct(String title, double price, String description, String image, String category) {
+    public Product createProduct(String title, double price, String description, String image, String category,double rating) {
         return null;
     }
 

@@ -85,7 +85,8 @@ public class ProductController {
                 requestDto.getPrice(),
                 requestDto.getDescription(),
                 requestDto.getImageUrl(),
-                requestDto.getCategoryName()
+                requestDto.getCategoryName(),
+                requestDto.getRating()
         );
     }
 

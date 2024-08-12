@@ -7,7 +7,7 @@ import com.example.productservice.models.Rating;
 import java.util.List;
 
 public interface ProductService {
-    Product createProduct(String title, double price,String description,String image,String category);
+    Product createProduct(String title, double price,String description,String image,String category,double rating);
 
     List<Product> getAllProducts();
     Product getProductById(Long id);

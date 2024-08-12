@@ -27,7 +27,8 @@ public class SelfProductServiceImpl implements ProductService {
                                  double price,
                                  String description,
                                  String imageUrl,
-                                 String categoryName) {
+                                 String categoryName,
+                                 double rating) {
         Category category=categoryService.createCategory(categoryName);
 
         Product product=new Product();
@@ -36,6 +37,7 @@ public class SelfProductServiceImpl implements ProductService {
         product.setName(title);
         product.setPrice(price);
         product.setImageUrl(imageUrl);
+        product.setRating(rating);
 
         return productRepository.save(product);
 

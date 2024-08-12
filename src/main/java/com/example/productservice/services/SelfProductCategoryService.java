@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.List;
 
 @Service
 public class SelfProductCategoryService implements CategoryService {
@@ -27,10 +26,20 @@ public class SelfProductCategoryService implements CategoryService {
 
     @Override
     public Category createCategory(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Category name cannot be null or empty");
+        }
+
+        // Check if the category already exists
+        Category existingCategory = categoryRepository.findByName(name);
+        if (existingCategory != null) {
+            return existingCategory;
+        }
+
+        // Create a new category if it does not exist
         Category category = new Category();
         category.setName(name);
-        categoryRepository.save(category);
-        return category;
+        return categoryRepository.save(category);
     }
 }
 

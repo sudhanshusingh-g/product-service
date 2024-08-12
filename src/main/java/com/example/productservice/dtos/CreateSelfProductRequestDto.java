@@ -9,4 +9,5 @@ public class CreateSelfProductRequestDto {
     private double price;
     private String categoryName;
     private String imageUrl;
+    private double rating;
 }
