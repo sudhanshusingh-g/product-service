@@ -3,11 +3,11 @@ package com.example.productservice.dtos;
 import lombok.Data;
 
 @Data
-public class CreateSelfProductRequestDto {
+public class CreateProductDto {
     private String title;
     private String description;
     private double price;
-    private String categoryName;
-    private String imageUrl;
+    private String image;
+    private Long categoryId;
     private double rating;
 }
